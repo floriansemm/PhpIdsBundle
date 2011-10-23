@@ -1,0 +1,7 @@
+parameters:
+  phpids.class: FS\PhpIdsBundle\PhpIds
+services:
+  phpids:
+    class: %phpids.class%
+    arguments: [ @request ]
+    scope: request
