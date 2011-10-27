@@ -33,10 +33,18 @@ class PhpIds {
     const REQUEST_COOKIE = 'COOKIE';
     const REQUEST_ALL = 'REQUEST';
     
+    /**
+     *
+     * @param Request $request 
+     */
     public function __construct(Request $request) {
         $this->request = $request;
     }
     
+    /**
+     *
+     * @param array $configs 
+     */
     public function configureMonitor(array $configs) {
         $this->configs = $configs;
 
@@ -45,18 +53,30 @@ class PhpIds {
         
         $this->monitor = new IdsMonitor($this->addInputs($this->configs), $init);
     }
-    
-    private function addInputs(array $configs) {
-//        if (array_key_exists('General', $configs) || array_key_exists('inputs', $configs['General'])) {
-//            throw new \RuntimeException('you need to setup the inputs');
-//        }
+       
+    /**
+     *
+     * add input by name: post, get, request, cookie
+     * 
+     * @param string $input 
+     * @throws RuntimeException
+     */
+    public function addRequest($input) {
+        if (!isset($this->configs['General'])) {
+            throw new \RuntimeException('The Monitor is not configured!');
+        }
         
+        $this->configs['General']['inputs'][] = $input;
+        
+        $this->configureMonitor($this->configs);
+    }
+    
+    private function addInputs(array $configs) {       
         $configuredInputs = $configs['General']['inputs'];
         foreach ($configuredInputs as $index => $input) {
             $configuredInputs[$index] = strtoupper($input);
         }
         
-        $concreteInputs = array();
         if (in_array(self::REQUEST_POST, $configuredInputs)) {
             $concreteInputs[self::REQUEST_POST] = $this->request->request->all();
         }
@@ -81,7 +101,7 @@ class PhpIds {
      */
     public function run() {
         if (count($this->configs) == 0 || $this->monitor === null) {
-            throw new \RuntimeException('problems with the monitor-object occured, please call configureMonitor');
+            throw new \RuntimeException('problems with the monitor-object occured, the monitor is not configured correct');
         }
         
         return $this->monitor->run();
