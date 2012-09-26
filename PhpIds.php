@@ -77,6 +77,7 @@ class PhpIds {
             $configuredInputs[$index] = strtoupper($input);
         }
         
+        $concreteInputs = array();
         if (in_array(self::REQUEST_POST, $configuredInputs)) {
             $concreteInputs[self::REQUEST_POST] = $this->request->request->all();
         }
