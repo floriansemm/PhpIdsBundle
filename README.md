@@ -38,6 +38,8 @@ Installation
             'IDS_'            => __DIR__.'/../vendor/phpids/lib',
             // ...
         ));
+		
+		You have to setup the include_path set_include_path(get_include_path().':'.__DIR__.'/../vendor/phpids/lib');
 
 Configuration
 =============
