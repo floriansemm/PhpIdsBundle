@@ -98,7 +98,7 @@ class PhpIds {
     }
     
     /**
-     * @see \IDS_Monitor::run()
+     * @return \IDS_Report
      */
     public function run() {
         if (count($this->configs) == 0 || $this->monitor === null) {
