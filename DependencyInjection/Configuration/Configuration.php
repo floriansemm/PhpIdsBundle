@@ -22,6 +22,20 @@ class Configuration implements ConfigurationInterface {
         $rootNode = $treeBuilder->root('fs_php_ids', 'array');
         $rootNode
             ->children()
+            	->arrayNode('handler')
+	            	->requiresAtLeastOneElement()
+	            	->useAttributeAsKey('name')
+	            	->prototype('array')
+	            		->children()
+	            			->scalarNode('id')->isRequired()->end()
+	            			->scalarNode('impact')->isRequired()->end()
+	            			->arrayNode('routes')
+	            				->defaultValue(array('/*'))
+	            				->prototype('scalar')->end()
+	            			->end()
+	            		->end()
+	            	->end()            		
+            	->end()
                 ->arrayNode('general')                        
                     ->beforeNormalization()
                         ->ifTrue(function($v){
