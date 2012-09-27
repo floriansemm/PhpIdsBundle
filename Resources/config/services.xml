@@ -6,7 +6,8 @@
 
     <parameters>
         <parameter key="phpids.class">FS\PhpIdsBundle\PhpIds</parameter>
-        <parameter key="phpids.request_listener.class">FS\PhpIdsBundle\EventListener\ReportListener</parameter>
+        <parameter key="phpids.report_listener.class">FS\PhpIdsBundle\EventListener\ReportListener</parameter>
+        <parameter key="phpids.default.report_handler.class">FS\PhpIdsBundle\ReportHandler\DefaultReportHandler</parameter>
     </parameters>
 
     <services>
@@ -14,9 +15,13 @@
 			<argument type="service" id="request" />
 		</service>
 		
-		<service id="phpids.request_listener" class="%phpids.request_listener.class%" scope="request" public="false">
+		<service id="phpids.report_listener" class="%phpids.report_listener.class%" scope="request" public="false">
             <argument type="service" id="phpids" />
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>		
+
+		<service id="phpids.default.report_handler" class="%phpids.default.report_handler.class%" scope="request">
+			<argument type="service" id="logger" />
+		</service>        
     </services>
 </container>
