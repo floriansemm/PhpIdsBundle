@@ -1,10 +1,7 @@
 <?php
 namespace FS\PhpIdsBundle\EventListener;
 
-use FS\PhpIdsBundle\ImpactHandler\DefaultImpactHandler;
-
-use FS\PhpIdsBundle\ImpactHandler\ImpactHandlerInterface;
-
+use FS\PhpIdsBundle\ReportHandler\ReportHandlerInterface;
 use FS\PhpIdsBundle\PhpIds;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
@@ -35,9 +32,13 @@ class ReportListener {
 				$listener->handle($report);
 			}
 		}		
+		
+		
 	}
 	
-	public function addImpactListener(ImpactHandlerInterface $listener) {
+	public function addReportListener(ReportHandlerInterface $listener) {
+		var_dump($listener);
+		
 		$this->impactListener[] = $listener;
 	}
 }

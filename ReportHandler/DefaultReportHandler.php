@@ -2,6 +2,11 @@
 namespace FS\PhpIdsBundle\ReportHandler;
 
 class DefaultReportHandler implements ReportHandlerInterface {
+	public function setImpact($impact) {
+	}
+
+	 public function setRoutes(array $routes) {
+	 }
 
 	public function reponsibleFor($impact, $url) {
 		var_dump($impact);

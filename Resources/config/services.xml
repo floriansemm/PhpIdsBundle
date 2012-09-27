@@ -15,7 +15,7 @@
 			<argument type="service" id="request" />
 		</service>
 		
-		<service id="phpids.report_listener" class="%phpids.report_listener.class%" scope="request" public="false">
+		<service id="phpids.report_listener" class="%phpids.report_listener.class%" scope="request">
             <argument type="service" id="phpids" />
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>		

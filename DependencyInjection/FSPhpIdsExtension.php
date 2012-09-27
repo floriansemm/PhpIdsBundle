@@ -2,6 +2,8 @@
 
 namespace FS\PhpIdsBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Reference;
+
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use FS\PhpIdsBundle\DependencyInjection\Configuration\Configuration;
 use Symfony\Component\Config\Definition\Processor;
@@ -23,6 +25,21 @@ class FSPhpIdsExtension extends Extension {
 
         $config = $processor->process($configuration->getConfigTreeBuilder(), $configs);       
 
+        if (array_key_exists('handler', $config)) {
+        	foreach ($config['handler'] as $handler) {
+        		$serviceId = $handler['id'];
+        		if ($container->hasDefinition($serviceId)) {
+        			$service = $container->getDefinition($serviceId);
+        			
+        			$service->addMethodCall('setImpact', array($handler['impact']));
+        			$service->addMethodCall('setRoutes', array($handler['routes']));
+        			
+        			$reportListener = $container->getDefinition('phpids.report_listener');
+        			$reportListener->addMethodCall('addReportListener', array(new Reference($serviceId)));
+        		}
+        	}
+        }
+        
         $renamedConfig = $this->renameConfigKeys($config);
         $container->getDefinition('phpids')->addMethodCall('configureMonitor', array($renamedConfig));
     }
