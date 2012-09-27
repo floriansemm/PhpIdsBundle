@@ -1,7 +1,7 @@
 <?php
-namespace FS\PhpIdsBundle\ImpactHandler;
+namespace FS\PhpIdsBundle\ReportHandler;
 
-interface ImpactHandlerInterface {
+interface ReportHandlerInterface {
 	
 	public function reponsibleFor($impact, $url);
 	public function handle(\IDS_Report $report);

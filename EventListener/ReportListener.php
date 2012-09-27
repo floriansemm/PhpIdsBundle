@@ -8,7 +8,7 @@ use FS\PhpIdsBundle\ImpactHandler\ImpactHandlerInterface;
 use FS\PhpIdsBundle\PhpIds;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
-class ImpactListener {
+class ReportListener {
 	/**
 	 * 
 	 * @var PhpIds

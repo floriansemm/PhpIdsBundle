@@ -6,7 +6,7 @@
 
     <parameters>
         <parameter key="phpids.class">FS\PhpIdsBundle\PhpIds</parameter>
-        <parameter key="phpids.request_listener.class">FS\PhpIdsBundle\EventListener\ImpactListener</parameter>
+        <parameter key="phpids.request_listener.class">FS\PhpIdsBundle\EventListener\ReportListener</parameter>
     </parameters>
 
     <services>
