@@ -4,9 +4,10 @@ namespace FS\PhpIdsBundle\ReportHandler;
 interface ReportHandlerInterface {
 	
 	/**
-	 * @param int $impact
+	 * @param int $lowest
+	 * @param int $highest
 	 */
-	public function setImpact($impact);
+	public function setImpactRange($lowest, $highest);
 	
 	/**
 	 * @param array $urls

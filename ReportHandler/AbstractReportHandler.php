@@ -3,15 +3,17 @@ namespace FS\PhpIdsBundle\ReportHandler;
 
 abstract class AbstractReportHandler implements ReportHandlerInterface {
 
-	protected $impact = 0;
+	protected $lowest = 0;
+	protected $highest = 0;
 	protected $urls = array(); 
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see \FS\PhpIdsBundle\ReportHandler\ReportHandlerInterface::setImpact()
+	 * @see \FS\PhpIdsBundle\ReportHandler\ReportHandlerInterface::setImpactRange()
 	 */
-	public function setImpact($impact) {
-		$this->impact = $impact;
+	public function setImpactRange($lowest, $highest) {
+		$this->lowest = $lowest;
+		$this->highest = $highest;
 	}
 	
 	/**
@@ -22,12 +24,16 @@ abstract class AbstractReportHandler implements ReportHandlerInterface {
 		$this->urls = $urls;
 	}
 	
+	private function isImpactInRange($impact) {
+		 return ($impact >= $this->lowest && $impact <= $this->highest);
+	}
+	
 	/**
 	 * (non-PHPdoc)
 	 * @see \FS\PhpIdsBundle\ReportHandler\ReportHandlerInterface::reponsibleFor()
 	 */
 	public function reponsibleFor($impact, $url) {
-		if (!($impact <= $this->impact) || $impact <= 0) {
+		if (!$this->isImpactInRange($impact) || $impact <= 0) {
 			return false;
 		}
 		

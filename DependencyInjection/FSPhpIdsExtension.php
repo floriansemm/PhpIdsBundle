@@ -27,15 +27,18 @@ class FSPhpIdsExtension extends Extension {
 
         if (array_key_exists('handler', $config)) {
         	foreach ($config['handler'] as $handler) {
-        		$serviceId = $handler['id'];
-        		if ($container->hasDefinition($serviceId)) {
-        			$service = $container->getDefinition($serviceId);
+        		$reportHandlerserviceId = $handler['id'];
+        		if ($container->hasDefinition($reportHandlerserviceId)) {
+        			$reportHandlerservice = $container->getDefinition($reportHandlerserviceId);
         			
-        			$service->addMethodCall('setImpact', array($handler['impact']));
-        			$service->addMethodCall('setUrls', array($handler['urls']));
+        			$lowest = $handler['impact_range']['lowest'];
+        			$highest = $handler['impact_range']['highest'];
+        			
+        			$reportHandlerservice->addMethodCall('setImpactRange', array($lowest, $highest));
+        			$reportHandlerservice->addMethodCall('setUrls', array($handler['urls']));
         			
         			$reportListener = $container->getDefinition('phpids.report_listener');
-        			$reportListener->addMethodCall('addReportListener', array(new Reference($serviceId)));
+        			$reportListener->addMethodCall('addReportListener', array(new Reference($reportHandlerserviceId)));
         		}
         	}
         }

@@ -13,74 +13,94 @@ class AbstractReportHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * 
-	 * @param int $impact
+	 * @param int $lowest
 	 * @param string $url
 	 * @return AbstractReportHandler
 	 */
-    private function setupHandler($impact, $url) {
+    private function setupHandler($lowest, $heighest, $url) {
     	$handler = new AbstractReportHandlerImplementation();
-    	$handler->setImpact($impact);
+    	$handler->setImpactRange($lowest, $heighest);
     	$handler->setUrls(array($url));    	
     	
     	return $handler;
     }
     
-    public function testIsResponsibleFor_Match() {
-    	$impact = '10'; 
-    	$url = '/url/*';
-    	
-		$handler = $this->setupHandler($impact, $url);
-    	
-    	$this->assertTrue($handler->reponsibleFor($impact, $url));
-    }
-    
     public function testIsResponsibleFor_Match_LastUrlMatch() {
-    	$impact = '10';
+    	$lowest = '10';
     	 
-    	$handler = $this->setupHandler($impact, '');
+    	$handler = $this->setupHandler($lowest, $lowest, '');
 		$handler->setUrls(array('/*', '/users/*', '/admin/*'));
     	
-    	$this->assertTrue($handler->reponsibleFor($impact, '/admin/'));
+    	$this->assertTrue($handler->reponsibleFor($lowest, '/admin/'));
     }    
 
     public function testIsResponsibleFor_Match_SecondMatch() {
-    	$impact = '10';
+    	$lowest = '10';
     
-    	$handler = $this->setupHandler($impact, '');
+    	$handler = $this->setupHandler($lowest, $lowest, '');
     	$handler->setUrls(array('/*', '/users/', '/admin/*'));
     	 
-    	$this->assertTrue($handler->reponsibleFor($impact, '/users/'));
+    	$this->assertTrue($handler->reponsibleFor($lowest, '/users/'));
+    }    
+    
+    public function testIsResponsibleFor_Match_ImpactEqualsLowest() {
+    	$lowest = '10';
+    	$url = '/url/*';
+    	 
+    	$handler = $this->setupHandler($lowest, $lowest, $url);
+    	 
+    	$this->assertTrue($handler->reponsibleFor($lowest, $url));
+    }    
+
+    public function testIsResponsibleFor_Match_ImpactEqualsHighest() {
+    	$lowest = '10';
+    	$highest = '20';
+    	$url = '/url/*';
+    
+    	$handler = $this->setupHandler($lowest, $highest, $url);
+    
+    	$this->assertTrue($handler->reponsibleFor($highest, $url));
+    }    
+
+    public function testIsResponsibleFor_Match_ImpactInRange() {
+    	$lowest = '10';
+    	$highest = '20';
+    	$url = '/url/*';
+    
+    	$handler = $this->setupHandler($lowest, $highest, $url);
+    
+    	$this->assertTrue($handler->reponsibleFor(15, $url));
     }    
     
     public function testIsResponsibleFor_ZeroImpact() {
     	$url = '/url/*';
-    	$handler = $this->setupHandler(10, $url);
+    	$handler = $this->setupHandler(10, 20, $url);
     	 
     	$this->assertFalse($handler->reponsibleFor(0, $url));
     }
 
-    public function testIsResponsibleFor_NoMatch_WrongToHigh() {
+    public function testIsResponsibleFor_NoMatch_ImpactToHigh() {
     	$url = '/url/*';
     	 
-    	$handler = $this->setupHandler(10, $url);
+    	$handler = $this->setupHandler(10, 20, $url);
     	 
     	$this->assertFalse($handler->reponsibleFor(25, $url));
     }
     
     public function testIsResponsibleFor_NoMatch_NoUrlsSet() {
-    	$impact = 10;
-    	$handler = $this->setupHandler($impact, '');
+    	$lowest = 10;
+    	$handler = $this->setupHandler($lowest, $lowest, '');
 		$handler->setUrls(array());
     	
-    	$this->assertFalse($handler->reponsibleFor($impact, '/some/url/'));
+    	$this->assertFalse($handler->reponsibleFor($lowest, '/some/url/'));
     }    
     
     public function testIsResponsibleFor_NoMatch_WrongUrl() {
     	$url = '/url/*';
-    	$impact = 10;
-    	$handler = $this->setupHandler($impact, $url);
+    	$lowest = 10;
+    	$handler = $this->setupHandler($lowest, $lowest, $url);
     
-    	$this->assertFalse($handler->reponsibleFor($impact, '/some/url/'));
+    	$this->assertFalse($handler->reponsibleFor($lowest, '/some/url/'));
     }    
 }
 
