@@ -27,13 +27,13 @@ abstract class AbstractReportHandler implements ReportHandlerInterface {
 	 * @see \FS\PhpIdsBundle\ReportHandler\ReportHandlerInterface::reponsibleFor()
 	 */
 	public function reponsibleFor($impact, $url) {
-		if (!($impact <= $this->impact)) {
+		if (!($impact <= $this->impact) || $impact <= 0) {
 			return false;
 		}
 		
 		$match = false;
 		foreach ($this->urls as $urlResponsibleFor) {
-			if (preg_match('#'.$urlResponsibleFor.'#', $url)) {
+			if (preg_match('#^'.$urlResponsibleFor.'#', $url)) {
 				$match = true;
 			}
 		}
