@@ -32,7 +32,7 @@ class FSPhpIdsExtension extends Extension {
         			$service = $container->getDefinition($serviceId);
         			
         			$service->addMethodCall('setImpact', array($handler['impact']));
-        			$service->addMethodCall('setRoutes', array($handler['routes']));
+        			$service->addMethodCall('setUrls', array($handler['urls']));
         			
         			$reportListener = $container->getDefinition('phpids.report_listener');
         			$reportListener->addMethodCall('addReportListener', array(new Reference($serviceId)));

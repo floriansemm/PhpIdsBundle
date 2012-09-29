@@ -1,6 +1,12 @@
 <?php
 namespace FS\PhpIdsBundle\EventListener;
 
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+
+use Symfony\Component\Routing\Router;
+
+use Symfony\Component\Routing\Route;
+
 use FS\PhpIdsBundle\ReportHandler\ReportHandlerInterface;
 use FS\PhpIdsBundle\PhpIds;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -32,13 +38,9 @@ class ReportListener {
 				$listener->handle($report);
 			}
 		}		
-		
-		
 	}
 	
 	public function addReportListener(ReportHandlerInterface $listener) {
-		var_dump($listener);
-		
 		$this->impactListener[] = $listener;
 	}
 }

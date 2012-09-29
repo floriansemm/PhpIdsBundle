@@ -1,5 +1,9 @@
 <?php
 
+namespace FS\PhpIdsBundle\Tests;
+
+use FS\PhpIdsBundle\PhpIds;
+
 /**
  *
  * @author Florian Semm
@@ -8,7 +12,7 @@ class PhpIdsTest extends \PHPUnit_Framework_TestCase {
     private $monitor;
     
     public function setUp() {
-        $this->monitor = new FS\PhpIdsBundle\PhpIds(new \Symfony\Component\HttpFoundation\Request());
+        $this->monitor = new PhpIds(new \Symfony\Component\HttpFoundation\Request());
     }
     
     /**

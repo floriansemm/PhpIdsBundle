@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface {
 	            		->children()
 	            			->scalarNode('id')->isRequired()->end()
 	            			->scalarNode('impact')->isRequired()->end()
-	            			->arrayNode('routes')
+	            			->arrayNode('urls')
 	            				->defaultValue(array('/*'))
 	            				->prototype('scalar')->end()
 	            			->end()
