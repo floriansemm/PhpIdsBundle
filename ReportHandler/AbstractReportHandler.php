@@ -6,6 +6,7 @@ abstract class AbstractReportHandler implements ReportHandlerInterface {
 	protected $lowest = 0;
 	protected $highest = 0;
 	protected $urls = array(); 
+	protected $requestUrl = '';
 	
 	/**
 	 * (non-PHPdoc)
@@ -33,13 +34,15 @@ abstract class AbstractReportHandler implements ReportHandlerInterface {
 	 * @see \FS\PhpIdsBundle\ReportHandler\ReportHandlerInterface::reponsibleFor()
 	 */
 	public function reponsibleFor($impact, $url) {
+		$this->requestUrl = $url;
+		
 		if (!$this->isImpactInRange($impact) || $impact <= 0) {
 			return false;
 		}
 		
 		$match = false;
 		foreach ($this->urls as $urlResponsibleFor) {
-			if (preg_match('#^'.$urlResponsibleFor.'#', $url)) {
+			if (preg_match('#^'.$urlResponsibleFor.'#', $this->requestUrl)) {
 				$match = true;
 			}
 		}
